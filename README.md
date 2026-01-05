@@ -1,13 +1,13 @@
 # Architecture Microservices - Messaging avec RabbitMQ
 
-## 📋 Description
+##  Description
 
 Ce projet démontre l'implémentation d'une architecture microservices utilisant RabbitMQ pour la messagerie asynchrone. Il comprend deux microservices principaux qui communiquent via un message broker :
 
 - **Producer Service** : Service qui produit et envoie des messages (utilisateurs) via RabbitMQ
 - **Consumer Service** : Service qui consomme les messages et les persiste dans une base de données MySQL
 
-## 🏗️ Architecture
+##  Architecture
 
 ```
 ┌─────────────────┐         ┌──────────────┐         ┌─────────────────┐
@@ -30,7 +30,7 @@ Ce projet démontre l'implémentation d'une architecture microservices utilisant
 3. Le **Consumer Service** écoute la queue et reçoit le message
 4. Le message est automatiquement persisté dans la base de données MySQL
 
-## 🛠️ Technologies utilisées
+##  Technologies utilisées
 
 - **Java 21**
 - **Spring Boot 4.0.1**
@@ -40,7 +40,7 @@ Ce projet démontre l'implémentation d'une architecture microservices utilisant
 - **Maven** (gestion des dépendances)
 - **Lombok** (réduction du code boilerplate)
 
-## 📦 Prérequis
+##  Prérequis
 
 Avant de démarrer le projet, assurez-vous d'avoir installé :
 
@@ -77,7 +77,7 @@ brew services start mysql
 docker run -d --name mysql -p 3306:3306 -e MYSQL_ROOT_PASSWORD=root -e MYSQL_DATABASE=testdb mysql:8.0
 ```
 
-## 🚀 Installation et Configuration
+##  Installation et Configuration
 
 ### 1. Cloner le projet
 ```bash
@@ -117,38 +117,7 @@ cd ../microservices-messaging-consumer
 mvn clean install
 ```
 
-## ▶️ Démarrage
 
-### Démarrer les services
-
-**Terminal 1 - Consumer Service** (doit être démarré en premier)
-```bash
-cd microservices-messaging-consumer
-mvn spring-boot:run
-```
-Le service démarre sur le port **8080**
-
-**Terminal 2 - Producer Service**
-```bash
-cd microservices-messaging-producer
-mvn spring-boot:run
-```
-Le service démarre sur le port **8081**
-
-## 📡 Utilisation
-
-### Envoyer un message (User)
-
-Utilisez l'API REST du Producer Service pour envoyer un message :
-
-```bash
-curl -X POST http://localhost:8081/api/produce \
-  -H "Content-Type: application/json" \
-  -d '{
-    "userId": "123",
-    "userName": "John Doe"
-  }'
-```
 
 ### Réponse attendue
 
@@ -171,46 +140,15 @@ curl -X POST http://localhost:8081/api/produce \
 
 3. **Interface RabbitMQ** : Accédez à http://localhost:15672 pour visualiser les queues et les messages
 
-## 📁 Structure du projet
+##  Structure du projet
 
-```
-micr-TP31/
-├── microservices-messaging-producer/     # Service Producteur
-│   ├── src/main/java/
-│   │   └── microservices_messaging_producer/
-│   │       ├── config/
-│   │       │   └── RabbitMQConfig.java   # Configuration RabbitMQ
-│   │       ├── controller/
-│   │       │   └── ProducerController.java
-│   │       ├── domain/
-│   │       │   └── User.java            # Modèle de données
-│   │       ├── service/
-│   │       │   └── ProducerService.java # Service d'envoi de messages
-│   │       └── MicroservicesMessagingProducerApplication.java
-│   └── src/main/resources/
-│       └── application.yaml             # Configuration (port 8081)
-│
-├── microservices-messaging-consumer/      # Service Consommateur
-│   ├── src/main/java/
-│   │   └── microservices_messaging_consumer/
-│   │       ├── config/
-│   │       │   └── RabbitMQConfig.java   # Configuration RabbitMQ
-│   │       ├── domain/
-│   │       │   └── User.java
-│   │       ├── repository/
-│   │       │   └── UserRepository.java   # Repository JPA
-│   │       ├── service/
-│   │       │   └── ConsumerService.java  # Service de réception de messages
-│   │       └── MicroservicesMessagingConsumerApplication.java
-│   └── src/main/resources/
-│       └── application.yaml             # Configuration (port 8080, MySQL)
-│
-├── spring-rabbitmq-producer/             # Exemple alternatif
-├── spring-rabbitmq-consumer/             # Exemple alternatif
-└── README.md
-```
+<img width="474" height="689" alt="Capture d’écran 2026-01-06 à 00 37 46" src="https://github.com/user-attachments/assets/0d69a0a5-f35f-4430-ba23-a7e370d2b7ce" />
 
-## 🔧 Configuration détaillée
+
+
+
+
+## Configuration détaillée
 
 ### Producer Service (`application.yaml`)
 ```yaml
@@ -253,7 +191,7 @@ server:
   port: 8080
 ```
 
-## 🧪 Tests
+##  Tests
 
 Pour exécuter les tests unitaires :
 
@@ -267,7 +205,7 @@ cd microservices-messaging-consumer
 mvn test
 ```
 
-## 📝 Modèle de données
+##  Modèle de données
 
 ### User
 ```java
@@ -277,33 +215,5 @@ public class User implements Serializable {
 }
 ```
 
-## 🔍 Dépannage
 
-### Problème : Le Consumer ne reçoit pas les messages
-- Vérifiez que RabbitMQ est en cours d'exécution
-- Vérifiez que les configurations (exchange, queue, routing key) correspondent
-- Vérifiez les logs des deux services
 
-### Problème : Erreur de connexion à MySQL
-- Vérifiez que MySQL est en cours d'exécution
-- Vérifiez les credentials dans `application.yaml`
-- Vérifiez que la base de données `testdb` existe
-
-### Problème : Erreur de connexion à RabbitMQ
-- Vérifiez que RabbitMQ est en cours d'exécution : `rabbitmqctl status`
-- Vérifiez les credentials (par défaut : guest/guest)
-- Vérifiez que le port 5672 est accessible
-
-## 📚 Ressources
-
-- [Documentation Spring AMQP](https://spring.io/projects/spring-amqp)
-- [Documentation RabbitMQ](https://www.rabbitmq.com/documentation.html)
-- [Spring Boot Documentation](https://spring.io/projects/spring-boot)
-
-## 👥 Auteur
-
-Projet réalisé dans le cadre du cours d'Architecture Microservices - TP31
-
-## 📄 Licence
-
-Ce projet est à des fins éducatives.
